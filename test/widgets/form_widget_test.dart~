@@ -1,0 +1,22 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:flight_booking_app/src/features/booking_flight/presentation/widgets/form_widget.dart';
+
+void main() {
+  testWidgets('FormWidget renders child widgets', (tester) async {
+    final formKey = GlobalKey<FormState>();
+
+    await tester.pumpWidget(
+      MaterialApp(
+        home: Scaffold(
+          body: FormWidget(
+            formKey: formKey,
+            children: const [Text('Test Label')],
+          ),
+        ),
+      ),
+    );
+
+    expect(find.text('Test Label'), findsOneWidget);
+  });
+}

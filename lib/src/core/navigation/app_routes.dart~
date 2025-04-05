@@ -1,0 +1,5 @@
+abstract class Routes{
+  static const String searchFlight = '/search-flight';
+  static const String availableFlight = '/available-flight';
+  static const String bookingFlight = '/booking-flight';
+}

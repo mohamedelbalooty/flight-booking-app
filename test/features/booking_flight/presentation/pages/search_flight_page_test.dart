@@ -1,0 +1,53 @@
+import 'package:easy_localization/easy_localization.dart';
+import 'package:flight_booking_app/src/features/booking_flight/presentation/pages/search_flight/cubit/search_flight_cubit.dart';
+import 'package:flight_booking_app/src/features/booking_flight/presentation/pages/search_flight/search_flight_page.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+void main() async {
+  TestWidgetsFlutterBinding.ensureInitialized();
+  SharedPreferences.setMockInitialValues({});
+  await EasyLocalization.ensureInitialized();
+
+  group('SearchFlightPage Widget Test', () {
+    testWidgets('renders correctly and contains all UI elements', (
+      WidgetTester tester,
+    ) async {
+      await tester.pumpWidget(
+        EasyLocalization(
+          supportedLocales: const [Locale('en')],
+          path: 'assets/translations',
+          fallbackLocale: const Locale('en'),
+          useOnlyLangCode: true,
+          child: Builder(
+            builder: (context) {
+              return ScreenUtilInit(
+                designSize: const Size(360, 690),
+                child: MaterialApp(
+                  locale: const Locale('en'),
+                  localizationsDelegates: context.localizationDelegates,
+                  supportedLocales: context.supportedLocales,
+                  home: BlocProvider(
+                    create: (_) => SearchFlightCubit(),
+                    child: const SearchFlightPage(),
+                  ),
+                ),
+              );
+            },
+          ),
+        ),
+      );
+
+      await tester.pumpAndSettle();
+
+      expect(find.text('Search Flight'), findsOneWidget);
+      expect(find.byType(TextFormField), findsNWidgets(3));
+      expect(find.text('Search'), findsOneWidget);
+      expect(find.byIcon(Icons.airplanemode_active), findsOneWidget);
+      expect(find.byKey(const Key('divider')), findsOneWidget);
+    });
+  });
+}

@@ -1,0 +1,112 @@
+import 'package:easy_localization/easy_localization.dart';
+import 'package:flight_booking_app/src/core/utils/app_colors.dart';
+import 'package:flight_booking_app/src/core/utils/app_size.dart';
+import 'package:flight_booking_app/src/core/utils/app_styles.dart';
+import 'package:flight_booking_app/src/core/utils/app_validators.dart';
+import 'package:flight_booking_app/src/features/booking_flight/domain/entities/flight_entity.dart';
+import 'package:flight_booking_app/src/features/booking_flight/presentation/pages/booking/cubit/booking_cubit.dart';
+import 'package:flight_booking_app/src/features/booking_flight/presentation/widgets/appbar_widget.dart';
+import 'package:flight_booking_app/src/features/booking_flight/presentation/widgets/button_widget.dart';
+import 'package:flight_booking_app/src/features/booking_flight/presentation/widgets/flight_card_widget.dart';
+import 'package:flight_booking_app/src/features/booking_flight/presentation/widgets/form_widget.dart';
+import 'package:flight_booking_app/src/features/booking_flight/presentation/widgets/text_input_widget.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+
+class BookingPage extends StatelessWidget {
+  const BookingPage({super.key, required this.flight});
+
+  final FlightEntity flight;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: appBarWidget(
+        title: 'booking_flight'.tr(),
+        centerTitle: false,
+        toolbarHeight: 70.h,
+      ),
+      body: BlocConsumer<BookingCubit, BookingState>(
+        listener: (context, state) {
+          if (state is BookingSuccess) {
+            ScaffoldMessenger.of(
+              context,
+            ).showSnackBar(SnackBar(content: Text('booking_success'.tr())));
+          }
+        },
+        builder: (context, state) {
+          final cubit = BookingCubit.get(context);
+          return FormWidget(
+            formKey: cubit.formKey,
+            children: [
+              AppSize.vGap12,
+              Text(
+                'confirm_your_flight'.tr(),
+                style: AppStyles.primaryStyle(
+                  color: AppColors.secondaryColor,
+                  fontWeight: FontWeight.w600,
+                  fontSize: 22.sp,
+                ),
+              ),
+              AppSize.vGap8,
+              FlightCardWidget(flight: flight),
+              AppSize.vGap24,
+              Text(
+                'passenger_info'.tr(),
+                style: AppStyles.primaryStyle(
+                  color: AppColors.secondaryColor,
+                  fontWeight: FontWeight.w600,
+                  fontSize: 20.sp,
+                ),
+              ),
+              AppSize.vGap8,
+              TextInputWidget(
+                label: 'full_name'.tr(),
+                hint: 'enter_full_name'.tr(),
+                icon: Icons.person,
+                controller: cubit.nameController,
+                onValidate:
+                    (value) => AppValidators.emptyValidator(
+                      value,
+                      label: 'full_name'.tr(),
+                    ),
+              ),
+              AppSize.vGap16,
+              TextInputWidget(
+                label: 'email'.tr(),
+                hint: 'enter_email'.tr(),
+                icon: Icons.email,
+                controller: cubit.emailController,
+                onValidate:
+                    (value) => AppValidators.emptyValidator(
+                      value,
+                      label: 'email'.tr(),
+                    ),
+              ),
+              AppSize.vGap16,
+              TextInputWidget(
+                label: 'phone'.tr(),
+                hint: 'enter_phone'.tr(),
+                icon: Icons.phone,
+                controller: cubit.phoneController,
+                keyboardType: TextInputType.phone,
+                onValidate:
+                    (value) => AppValidators.emptyValidator(
+                      value,
+                      label: 'phone'.tr(),
+                    ),
+              ),
+              AppSize.vGap32,
+              ButtonWidget(
+                buttonTitle: 'confirm'.tr(),
+                onPressed: () => cubit.bookFlight(),
+              ),
+              AppSize.vGap32,
+            ],
+          );
+        },
+      ),
+    );
+  }
+}

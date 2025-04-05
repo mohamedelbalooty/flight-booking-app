@@ -1,0 +1,40 @@
+import 'package:dio/dio.dart';
+import 'package:flight_booking_app/src/core/constants/api_constants.dart';
+import 'package:flight_booking_app/src/core/errors/dio_exception_handler.dart';
+import 'package:flight_booking_app/src/core/errors/exceptions.dart';
+import 'package:flight_booking_app/src/features/booking_flight/data/models/flight_model.dart';
+
+abstract class FlightDataSource {
+  Future<List<FlightModel>> getFlights({
+    required String from,
+    required String to,
+    required String date,
+  });
+}
+
+class FlightDataSourceImpl implements FlightDataSource {
+  final Dio dio;
+
+  FlightDataSourceImpl({required this.dio});
+
+  @override
+  Future<List<FlightModel>> getFlights({
+    required String from,
+    required String to,
+    required String date,
+  }) async {
+    try {
+      final response = await dio.get(
+        ApiConstants.flights,
+        queryParameters: {'from': from, 'to': to, 'date': date},
+      );
+      final List data = response.data;
+      final flights = data.map((e) => FlightModel.fromJson(e)).toList();
+      return flights;
+    } on DioException catch (dioException) {
+      throw handleDioException(dioException);
+    } catch (e) {
+      throw UnknownException(e.toString());
+    }
+  }
+}

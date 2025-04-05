@@ -1,0 +1,155 @@
+import 'package:easy_localization/easy_localization.dart';
+import 'package:flight_booking_app/src/core/utils/app_colors.dart';
+import 'package:flight_booking_app/src/core/utils/app_size.dart';
+import 'package:flight_booking_app/src/core/utils/app_styles.dart';
+import 'package:flight_booking_app/src/features/booking_flight/domain/entities/flight_entity.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+
+class FlightCardWidget extends StatelessWidget {
+  const FlightCardWidget({super.key, required this.flight, this.onTap});
+
+  final FlightEntity flight;
+  final VoidCallback? onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
+        width: double.infinity,
+        decoration: BoxDecoration(
+          color: AppColors.whiteColor,
+          borderRadius: BorderRadius.circular(8),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.1),
+              blurRadius: 8,
+              offset: Offset(0, 4),
+            ),
+          ],
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  'flight_number'.tr(),
+                  style: TextStyle(
+                    color: AppColors.grey600Color,
+                    fontSize: 14.sp,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                Text(
+                  flight.id ?? '',
+                  style: AppStyles.primaryStyle(
+                    color: AppColors.secondaryColor,
+                    fontSize: 14.sp,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+              ],
+            ),
+            AppSize.vGap8,
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  'airline'.tr(),
+                  style: TextStyle(
+                    color: AppColors.grey600Color,
+                    fontSize: 14.sp,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                Text(
+                  flight.airline ?? '',
+                  style: AppStyles.primaryStyle(
+                    color: AppColors.secondaryColor,
+                    fontSize: 14.sp,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+              ],
+            ),
+            AppSize.vGap8,
+            Stack(
+              alignment: Alignment.center,
+              children: [
+                Row(
+                  children: [
+                    Text(
+                      flight.departure ?? '',
+                      style: AppStyles.primaryStyle(
+                        color: AppColors.secondaryColor,
+                        fontSize: 14.sp,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    const Spacer(),
+                    ...List.generate(
+                      12,
+                      (_) => Container(
+                        color: AppColors.primaryColor,
+                        height: 1,
+                        width: 8.w,
+                        margin: const EdgeInsets.symmetric(horizontal: 2),
+                      ),
+                    ),
+                    const Spacer(),
+                    Text(
+                      flight.arrival ?? '',
+                      style: AppStyles.primaryStyle(
+                        color: AppColors.secondaryColor,
+                        fontSize: 14.sp,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ],
+                ),
+                Transform.rotate(
+                  angle: 1.1,
+                  child: Icon(
+                    Icons.airplanemode_active,
+                    color: AppColors.primaryColor,
+                    size: 26.sp,
+                  ),
+                ),
+              ],
+            ),
+            AppSize.vGap12,
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  '${flight.price} \$',
+                  style: AppStyles.primaryStyle(fontWeight: FontWeight.w700),
+                ),
+                Container(
+                  height: 36.h,
+                  width: 100.w,
+                  decoration: BoxDecoration(
+                    color: AppColors.secondaryColor,
+                    borderRadius: BorderRadius.circular(24),
+                  ),
+                  child: Center(
+                    child: Text(
+                      'book_now'.tr(),
+                      textAlign: TextAlign.center,
+                      style: AppStyles.buttonStyle(fontSize: 14.sp, height: 1),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}

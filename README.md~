@@ -64,6 +64,10 @@ Shared widget tests (e.g., flight_card_widget_test.dart)
 
 ✅ Note: http_mock_adapter is used to mock API responses for testing.
 
+🧪 Run tests
+
+flutter test
+
 ⚠️ API Note for Reviewers
 
 Due to the mock API not working currently, the app uses a temporary method:

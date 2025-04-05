@@ -35,7 +35,7 @@ class BookingPage extends StatelessWidget {
             ScaffoldMessenger.of(
               context,
             ).showSnackBar(SnackBar(content: Text('booking_success'.tr())));
-            context.go(AppRoutes.searchFlight);
+            context.pushAndRemoveUntil(AppRoutes.searchFlight);
           }
         },
         builder: (context, state) {

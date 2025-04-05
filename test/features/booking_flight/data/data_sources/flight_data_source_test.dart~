@@ -24,7 +24,7 @@ void main() {
         "flight_number": "XYZ123",
         "departure": "10:00 AM",
         "arrival": "2:00 PM",
-        "price": '250',
+        "price": 250,
       },
     ];
 

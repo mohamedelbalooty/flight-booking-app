@@ -33,7 +33,7 @@ class SearchFlightCubit extends Cubit<SearchFlightState> {
   void selectTravelDate(BuildContext context) async {
     final date = await _showDatePicker(context);
     if (date != null) {
-      travelDateController.text = date.toEeeDdMmmYyyy();
+      travelDateController.text = date.toYyyyMmDdWithDashes();
     }
   }
 

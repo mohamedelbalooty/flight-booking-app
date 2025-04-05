@@ -25,10 +25,6 @@ class AvailableFlightsCubit extends Cubit<AvailableFlightsState> {
     _from = from;
     _to = to;
     _date = date;
-    // NOTE: Using local mock data instead of real API response
-    // because the provided API endpoint is currently not working.
-    // This ensures the UI and logic are fully testable.
-    // To use the real API, uncomment the following line:
     // getSearchedFlights();
     getSearchedFlightsLocal();
   }
